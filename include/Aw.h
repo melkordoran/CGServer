@@ -10,13 +10,20 @@
 #ifndef __AW_H__
 #define __AW_H__
 
-#ifndef LINUX
+/*
+ * The original SDK headers use __declspec(dllimport) on Windows builds.  When
+ * compiling on non-Windows platforms with GCC/Clang this decoration is
+ * unnecessary and can even trigger syntax errors if the compiler does not
+ * recognise the directive.  Detect the Microsoft compiler explicitly and fall
+ * back to a no-op definition elsewhere so the header remains portable.
+ */
+#if defined(_MSC_VER)
   #if !defined (AW_SDK) && !defined (AW_BROWSER) && !defined (AW_STATIC)
     #define AWAPI     __declspec (dllimport)
   #else
     #define AWAPI
   #endif
-#else // LINUX
+#else
   #define AWAPI
   #include <stdint.h>
   #include <stdio.h>
