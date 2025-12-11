@@ -25,6 +25,12 @@
 
 #include <wx/config.h>
 
+#ifndef __declspec
+// Allow including the Windows-centric ActiveWorlds SDK headers when building
+// with GCC/Clang by making __declspec a no-op on non-MSVC toolchains.
+#define __declspec(x)
+#endif
+
 #include <Aw.h>
 
 #include "Cpasspriv.h"
