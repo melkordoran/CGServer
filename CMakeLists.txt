@@ -65,7 +65,13 @@ if (BUILD_32)
     set_target_properties(${PROJECT_NAME} PROPERTIES COMPILE_FLAGS "-m32" LINK_FLAGS "-m32")
     MESSAGE(STATUS "Excluding 64bit library paths from search.")
     set_property(GLOBAL PROPERTY FIND_LIBRARY_USE_LIB64_PATHS OFF)
+    list(PREPEND CMAKE_LIBRARY_PATH "/usr/lib/i386-linux-gnu" "/lib/i386-linux-gnu")
+    list(PREPEND CMAKE_PREFIX_PATH "/usr/lib/i386-linux-gnu" "/lib/i386-linux-gnu")
     set(ARCH i386)
+
+    # size_t resolves to unsigned int on 32-bit builds, so tell wxWidgets to avoid
+    # generating duplicate operator[] overloads for wxString and related classes.
+    add_compile_definitions(wxSIZE_T_IS_UINT=1)
 else()
     set_target_properties(${PROJECT_NAME} PROPERTIES COMPILE_FLAGS "-m64" LINK_FLAGS "-m64")
     set(ARCH amd64)
